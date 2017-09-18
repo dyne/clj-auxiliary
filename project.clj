@@ -1,8 +1,9 @@
-(defproject org.clojars.dyne/auxiliary "0.1.0-SNAPSHOT"
+(defproject org.clojars.dyne/auxiliary "0.2.0-SNAPSHOT"
   :description "Common auxiliary functions extending clojure basic utilities"
   :url "https://dyne.org"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [io.forward/yaml "1.0.6"]]
   :profiles {:dev {:plugins [[lein-marginalia "0.9.0"]]}}
   )
