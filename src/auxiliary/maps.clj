@@ -1,5 +1,7 @@
 (ns auxiliary.maps
-  "Various functions on key-value structures")
+  "Various functions on key-value structures"
+  (:require [clojure.walk :refer :all]
+            [clojure.string :refer [blank?]]))
 
 (defn invert
   "Produce a map with values as keys.
@@ -9,6 +11,11 @@
             (assoc so-far val key))
           {}
           map))
+
+(defn compress
+  "Compress a collection removing empty elements"
+  [coll]
+  (postwalk #(if (coll? %) (into (empty %) (remove blank? %)) %) coll))
 
 (defn conj-into
   "`original` is a map. `additions` is a sequence of keys and values (not a map).
