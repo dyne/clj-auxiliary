@@ -24,27 +24,29 @@
             [clojure.walk :refer [keywordize-keys]]
             [yaml.core :as yaml]))
 
+(defn yaml-read [path]
+  (if (.exists (io/as-file path))
+    (-> path yaml/from-file keywordize-keys)))
+
 (defn config-read
   "Read configurations from standard locations, overriding defaults or
   system-wide with user specific paths. Requires the application name
   and optionally default values."
   ([appname] (config-read appname {}))
-  ([appname defaults]
+  ([appname defaults & flags]
    (let [home (System/getenv "HOME")
          pwd  (System/getenv "PWD" )
          file (str appname ".yaml")
-         conf {(keyword appname) defaults
-               :appname appname
-               :filename file
-               :paths [(str      "/etc/" appname "/" file)
-                       (str home "/."    appname "/" file)
-                       (str pwd  "/"     file)]}]
+         conf (-> {:appname appname
+                   :filename file
+                   :paths [(str      "/etc/" appname "/" file)
+                           (str home "/."    appname "/" file)
+                           (str pwd  "/"     file)]}
+                  (conj defaults))]
      (loop [[p & paths] (:paths conf)
             res defaults]
        (let [res (merge res
                         (if (.exists (io/as-file p))
-                          (conj res (keywordize-keys (yaml/from-file p)))))]
+                          (conj res (yaml-read p))))]
          (if (empty? paths) (conj conf {(keyword appname) res})
              (recur paths res)))))))
-
-
