@@ -41,7 +41,10 @@
                    :filename file
                    :paths [(str      "/etc/" appname "/" file)
                            (str home "/."    appname "/" file)
-                           (str pwd  "/"     file)]}
+                           (str pwd  "/"     file)
+                           ;; TODO: this should be resources
+                           (str pwd "/resources/"  file)
+                           (str pwd "/test-resources/" file)]}
                   (conj defaults))]
      (loop [[p & paths] (:paths conf)
             res defaults]
