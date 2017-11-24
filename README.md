@@ -18,7 +18,7 @@ avoiding the proliferation of further dependencies.
 Insert into your project `:dependencies`:
 
 ```
-[org.clojars.dyne/auxiliary "0.1.0-SNAPSHOT"]
+[org.clojars.dyne/auxiliary "0.3.0-SNAPSHOT"]
 ```
 
 ## License
