@@ -29,15 +29,20 @@
    [clojure.string :as str]
    [environ.core :as env]))
 
+(defonce translation (atom {}))
+
 (defn load-translations-from-string [s]
   (yaml/parse-string s))
 
 (defn load-translations-from-file [file-name]
   (if file-name
-    (-> file-name
-        io/resource
-        slurp
-        load-translations-from-string)
+    (if-let [res (io/resource file-name)]
+      (-> res 
+          slurp
+          load-translations-from-string)
+      (-> file-name 
+          slurp
+          load-translations-from-string))
     (log/error "The translation file could not be read.")))
 
 (defn deep-merge
@@ -47,9 +52,10 @@
     (apply merge-with deep-merge vals)
     (last vals)))
 
-(def translation
-    (deep-merge
-     (load-translations-from-file (env/env :translation-fallback))
-     (load-translations-from-file (env/env :translation-language))))
+(defn init [& translation-files]
+  (reset! translation (apply deep-merge (map #(load-translations-from-file %) translation-files))))
 
-(defn locale [items] (get-in translation items))
+(defn locale [items]
+  (when (empty? @translation)
+    (log/error "Translations not initialised"))
+  (get-in @translation items))
