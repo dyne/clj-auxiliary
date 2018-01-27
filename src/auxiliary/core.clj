@@ -97,7 +97,7 @@
 
 ;; from suchwow.shorthand
 
-(defn any?
+(defn anything?
   "`any?` provides shorthand for \"containment\" queries that otherwise
    require different functions. Behavior depends on the type of `predlike`.
    
