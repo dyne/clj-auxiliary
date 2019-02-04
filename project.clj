@@ -1,4 +1,4 @@
-(defproject org.clojars.dyne/auxiliary "0.5.0-SNAPSHOT"
+(defproject org.clojars.dyne/auxiliary "0.5.0"
   :description "Common auxiliary functions extending clojure basic utilities"
   :url "https://dyne.org"
   :license {:name "Eclipse Public License"
