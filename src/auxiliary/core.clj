@@ -1,4 +1,5 @@
-(ns auxiliary.core)
+(ns auxiliary.core
+  (:refer-clojure :exclude [any?]))
 
 ;; from suchwow.control-flow
 
