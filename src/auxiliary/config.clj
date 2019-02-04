@@ -22,7 +22,12 @@
   (:refer-clojure :exclude [load])
   (:require [clojure.java.io :as io]
             [clojure.walk :refer [keywordize-keys]]
-            [yaml.core :as yaml]))
+            [yaml.core :as yaml]
+            [taoensso.timbre :as log]))
+
+(def default-settings {:webserver
+                       {:anti-forgery false
+                        :ssl-redirect false}})
 
 (defn yaml-read [path]
   (if (.exists (io/as-file path))
@@ -53,3 +58,7 @@
                           (conj res (yaml-read p))))]
          (if (empty? paths) (conj conf {(keyword appname) res})
              (recur paths res)))))))
+
+(defn load-config [name default]
+  (log/info (str "Loading configuration: " name))
+  (->> (config-read name default)))
